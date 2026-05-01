@@ -5,7 +5,8 @@
 
 'use strict';
 
-const EVENT_DATE = new Date('2026-06-04T19:30:00+02:00');
+const EVENT_DATE = new Date('2026-06-04T19:30:00+03:00');
+const EVENT_TIMEZONE = 'Africa/Cairo';
 const EVENT_LOCATION = 'Rooftop 2, inside Masjeed Al-Shortaa, New Cairo, Egypt';
 const STORAGE_KEY = 'wedding_wishes_omar_salma_2026';
 
@@ -432,20 +433,44 @@ function setupCalendarButton() {
   const btn = document.getElementById('add-calendar-btn');
   if (!btn) return;
 
-  const startUtc = EVENT_DATE.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  const toIcsLocalDateTime = (date, timeZone) => {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    }).formatToParts(date);
+
+    const valueByType = type => parts.find(part => part.type === type)?.value;
+    const year = valueByType('year');
+    const month = valueByType('month');
+    const day = valueByType('day');
+    const hour = valueByType('hour');
+    const minute = valueByType('minute');
+    const second = valueByType('second');
+
+    return `${year}${month}${day}T${hour}${minute}${second}`;
+  };
+
+  const startLocal = toIcsLocalDateTime(EVENT_DATE, EVENT_TIMEZONE);
   const endDate = new Date(EVENT_DATE.getTime() + (2 * 60 * 60 * 1000));
-  const endUtc = endDate.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  const endLocal = toIcsLocalDateTime(endDate, EVENT_TIMEZONE);
   const stamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
 
   const ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
     'PRODID:-//OmarAndSalma//KatbKetab//EN',
+    `X-WR-TIMEZONE:${EVENT_TIMEZONE}`,
     'BEGIN:VEVENT',
     'UID:katb-ketab-omar-salma-20260604@invitation',
     `DTSTAMP:${stamp}`,
-    `DTSTART:${startUtc}`,
-    `DTEND:${endUtc}`,
+    `DTSTART;TZID=${EVENT_TIMEZONE}:${startLocal}`,
+    `DTEND;TZID=${EVENT_TIMEZONE}:${endLocal}`,
     'SUMMARY:Omar & Salma - Katb Ketab',
     `LOCATION:${EVENT_LOCATION}`,
     'DESCRIPTION:Join us for the Katb Ketab of Omar and Salma.',
