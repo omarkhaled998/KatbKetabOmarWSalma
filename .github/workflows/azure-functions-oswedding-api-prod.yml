@@ -32,6 +32,16 @@ jobs:
         run: npm ci
         working-directory: api
 
+      - name: Verify function files
+        run: |
+          ls -la api
+          ls -la api/GetWishes
+          ls -la api/SaveWish
+          test -f api/GetWishes/index.js
+          test -f api/GetWishes/function.json
+          test -f api/SaveWish/index.js
+          test -f api/SaveWish/function.json
+
       - name: Azure login (OIDC)
         uses: azure/login@v2
         with:
@@ -43,4 +53,4 @@ jobs:
         uses: Azure/functions-action@v1
         with:
           app-name: oswedding-api-prod
-          package: api
+          package: ./api
