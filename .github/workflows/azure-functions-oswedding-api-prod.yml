@@ -32,13 +32,17 @@ jobs:
         run: npm ci
         working-directory: api
 
-      - name: Create deploy zip
+      - name: Verify function files
         run: |
-          cd api
-          zip -r ../functionapp.zip . -x "local.settings.json" -x ".gitignore"
-          cd ..
-          echo "Zip contents:"
-          unzip -l functionapp.zip
+          ls -la api
+          ls -la api/GetWishes
+          ls -la api/SaveWish
+          test -f api/host.json
+          test -f api/package.json
+          test -f api/GetWishes/index.js
+          test -f api/GetWishes/function.json
+          test -f api/SaveWish/index.js
+          test -f api/SaveWish/function.json
 
       - name: Login to Azure (OIDC)
         uses: azure/login@v2
@@ -51,4 +55,5 @@ jobs:
         uses: Azure/functions-action@v1
         with:
           app-name: oswedding-api-prod
-          package: ./functionapp.zip
+          package: ./api
+          remote-build: true
