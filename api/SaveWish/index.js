@@ -84,7 +84,7 @@ module.exports = async function (context, req) {
       name,
       message,
       createdAt: new Date().toISOString(),
-      approved: false // Requires manual approval
+      approved: true
     };
 
     context.log(`Inserting wish from ${name}`);
@@ -96,7 +96,7 @@ module.exports = async function (context, req) {
       status: 201,
       body: {
         success: true,
-        message: "Wish submitted successfully and is pending approval",
+        message: "Wish submitted successfully",
         wishId: createdWish.id
       }
     };
