@@ -25,11 +25,11 @@ module.exports = async function (context, req) {
     const database = client.database(databaseId);
     const container = database.container(containerId);
 
-    // Query wishes for this event
+    // Query public wishes for this event
     context.log(`Querying wishes for eventId: ${eventId}`);
     const { resources: wishes } = await container.items
       .query({
-        query: "SELECT * FROM c WHERE c.eventId = @eventId ORDER BY c.createdAt DESC",
+        query: "SELECT * FROM c WHERE c.eventId = @eventId AND c.approved = true ORDER BY c.createdAt DESC",
         parameters: [{ name: "@eventId", value: eventId }]
       })
       .fetchAll();

@@ -98,6 +98,7 @@ const I18N = {
     name_placeholder: 'e.g. Ahmed & Nour',
     wish_placeholder: 'Share your heartfelt message...',
     characters_remaining: 'characters remaining',
+    post_publicly: 'Post publicly',
     send_wish: 'Send Wish',
     wishes_note: 'Wishes are shared with all guests once cloud API is connected; otherwise they are saved on this device.',
     export_wishes: 'Export Wishes (JSON)',
@@ -169,6 +170,7 @@ const I18N = {
     name_placeholder: 'مثال: أحمد ونور',
     wish_placeholder: 'اكتب تهنئتك من القلب...',
     characters_remaining: 'حرف متبقي',
+    post_publicly: 'انشر الرسالة للجميع',
     send_wish: 'إرسال التهنئة',
     wishes_note: 'تظهر التهاني لكل الضيوف عند ربط واجهة السحابة، وإلا تُحفظ على هذا الجهاز فقط.',
     export_wishes: 'تحميل التهاني (JSON)',
@@ -326,7 +328,8 @@ function normalizeWish(wish) {
   return {
     name: safeName,
     message: safeMessage,
-    timestamp: new Date(ts).getTime() || Date.now()
+    timestamp: new Date(ts).getTime() || Date.now(),
+    approved: wish?.approved !== false
   };
 }
 
@@ -370,13 +373,39 @@ function formatTimestamp(ts) {
   });
 }
 
+function formatEgyptExportTimestamp(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Africa/Cairo',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  }).formatToParts(date);
+
+  const pick = type => parts.find(part => part.type === type)?.value || '';
+  const day = pick('day');
+  const month = pick('month');
+  const year = pick('year');
+  const hour = pick('hour');
+  const minute = pick('minute');
+
+  return `${day}-${month}-${year} ${hour}:${minute} EGY Time`;
+}
+
+function toCsvValue(value) {
+  const str = String(value ?? '');
+  return `"${str.replace(/"/g, '""')}"`;
+}
+
 function renderWishes() {
   const list = document.getElementById('wishes-list');
   const emptyMsg = document.getElementById('wishes-empty');
   const label = document.getElementById('wishes-count-label');
   if (!list) return;
 
-  const wishes = wishesCache;
+  const wishes = wishesCache.filter(w => w.approved !== false);
   const dict = I18N[currentLang] || I18N.en;
 
   if (wishes.length === 0) {
@@ -416,6 +445,7 @@ function initGuestbook() {
   const form = document.getElementById('wish-form');
   const nameInput = document.getElementById('wish-name');
   const msgInput = document.getElementById('wish-message');
+  const publicInput = document.getElementById('wish-public');
   const charLeft = document.getElementById('char-left');
   const exportBtn = document.getElementById('export-wishes');
 
@@ -445,7 +475,8 @@ function initGuestbook() {
       return;
     }
 
-    const newWish = { name, message, timestamp: Date.now() };
+    const postPublicly = publicInput ? publicInput.checked : true;
+    const newWish = { name, message, timestamp: Date.now(), approved: postPublicly };
     wishesCache.push(newWish);
     saveWishesLocal(wishesCache);
     renderWishes();
@@ -458,7 +489,7 @@ function initGuestbook() {
             'Content-Type': 'application/json',
             Accept: 'application/json'
           },
-          body: JSON.stringify({ name, message })
+          body: JSON.stringify({ name, message, postPublicly })
         });
 
         if (!response.ok) {
@@ -481,17 +512,30 @@ function initGuestbook() {
   if (exportBtn) {
     exportBtn.addEventListener('click', () => {
       const wishes = wishesCache;
-      const payload = {
-        exportedAt: new Date().toISOString(),
-        count: wishes.length,
-        wishes
-      };
+      const rows = [
+        ['Exported At', formatEgyptExportTimestamp()],
+        ['Count', String(wishes.length)],
+        [],
+        ['Name', 'Message', 'Timestamp']
+      ];
 
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      wishes.forEach(wish => {
+        rows.push([
+          wish.name || '',
+          wish.message || '',
+          formatTimestamp(wish.timestamp)
+        ]);
+      });
+
+      const csv = rows
+        .map(row => row.map(toCsvValue).join(','))
+        .join('\r\n');
+
+      const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'katb-ketab-wishes.json';
+      a.download = 'katb-ketab-wishes.csv';
       document.body.appendChild(a);
       a.click();
       a.remove();

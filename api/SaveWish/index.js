@@ -42,6 +42,9 @@ module.exports = async function (context, req) {
     // Validate request fields
     const name = String(body.name || "").trim();
     const message = String(body.message || "").trim();
+    const postPublicly = body.postPublicly === undefined
+      ? true
+      : !(body.postPublicly === false || body.postPublicly === "false" || body.postPublicly === 0 || body.postPublicly === "0");
     if (!name || !message) {
       context.log("SaveWish rejected: missing required name/message fields");
       context.res = {
@@ -95,7 +98,7 @@ module.exports = async function (context, req) {
       name,
       message,
       createdAt: new Date().toISOString(),
-      approved: true
+      approved: postPublicly
     };
 
     context.log(`Inserting wish from ${name}`);
