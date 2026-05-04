@@ -857,6 +857,31 @@ sup   { font-size: 0.55em; vertical-align: super; }
   margin-top: 6px;
   transition: color var(--transition);
 }
+
+.checkbox-field {
+  margin-bottom: 18px;
+}
+
+.checkbox-label {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0 !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.04em !important;
+  text-transform: none !important;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--gold);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
 .form-note {
   font-size: 0.7rem;
   color: var(--text-light);
