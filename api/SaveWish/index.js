@@ -3,8 +3,35 @@ const { v4: uuidv4 } = require("uuid");
 
 module.exports = async function (context, req) {
   try {
-    // Validate request body
-    const { name, message } = req.body;
+    // Normalize request body for different host payload shapes.
+    let body = req.body;
+    if (!body && typeof req.rawBody === "string") {
+      body = req.rawBody;
+    }
+
+    if (typeof body === "string") {
+      try {
+        body = JSON.parse(body);
+      } catch {
+        context.res = {
+          status: 400,
+          body: { success: false, error: "Invalid JSON body" }
+        };
+        return;
+      }
+    }
+
+    if (!body || typeof body !== "object") {
+      context.res = {
+        status: 400,
+        body: { success: false, error: "Request body is required" }
+      };
+      return;
+    }
+
+    // Validate request fields
+    const name = String(body.name || "").trim();
+    const message = String(body.message || "").trim();
     if (!name || !message) {
       context.res = {
         status: 400,
@@ -54,8 +81,8 @@ module.exports = async function (context, req) {
     const wish = {
       id: uuidv4(),
       eventId: eventId,
-      name: name.trim(),
-      message: message.trim(),
+      name,
+      message,
       createdAt: new Date().toISOString(),
       approved: false // Requires manual approval
     };
