@@ -35,6 +35,41 @@ function buildWishesApiUrl(functionCode) {
 
 const API_GET_WISHES_URL = buildWishesApiUrl(API_GET_FUNCTION_CODE);
 const API_SAVE_WISH_URL = buildWishesApiUrl(API_SAVE_FUNCTION_CODE);
+const EXPORT_PASSWORD = String(window.WISHES_EXPORT_PASSWORD || '');
+const EXPORT_AUTH_SESSION_KEY = 'wishes_export_unlocked';
+
+function requestExportAccess() {
+  if (!EXPORT_PASSWORD) return true;
+
+  try {
+    if (sessionStorage.getItem(EXPORT_AUTH_SESSION_KEY) === '1') return true;
+  } catch {
+    // Ignore sessionStorage access issues and fall back to prompt.
+  }
+
+  const promptText = currentLang === 'ar'
+    ? 'أدخل كلمة مرور التصدير'
+    : 'Enter export password';
+  const wrongText = currentLang === 'ar'
+    ? 'كلمة المرور غير صحيحة'
+    : 'Incorrect password';
+
+  const entered = window.prompt(promptText, '');
+  if (entered === null) return false;
+
+  if (entered !== EXPORT_PASSWORD) {
+    window.alert(wrongText);
+    return false;
+  }
+
+  try {
+    sessionStorage.setItem(EXPORT_AUTH_SESSION_KEY, '1');
+  } catch {
+    // Ignore sessionStorage write issues.
+  }
+
+  return true;
+}
 
 const I18N = {
   en: {
@@ -511,6 +546,8 @@ function initGuestbook() {
 
   if (exportBtn) {
     exportBtn.addEventListener('click', () => {
+      if (!requestExportAccess()) return;
+
       const wishes = wishesCache;
       const rows = [
         ['Exported At', formatEgyptExportTimestamp()],
