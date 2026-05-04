@@ -135,6 +135,8 @@ const I18N = {
     characters_remaining: 'characters remaining',
     post_publicly: 'Post publicly',
     send_wish: 'Send Wish',
+    wish_submitted_public: 'Thanks! Your wish was submitted and is visible to guests.',
+    wish_submitted_private: 'Thanks! Your wish was submitted privately.',
     wishes_note: 'Wishes are shared with all guests once cloud API is connected; otherwise they are saved on this device.',
     export_wishes: 'Export Wishes',
     wishes: 'Wishes',
@@ -207,6 +209,8 @@ const I18N = {
     characters_remaining: 'حرف متبقي',
     post_publicly: 'انشر الرسالة للجميع',
     send_wish: 'إرسال التهنئة',
+    wish_submitted_public: 'شكرا لك! تم إرسال تهنئتك وهي ظاهرة للضيوف.',
+    wish_submitted_private: 'شكرا لك! تم إرسال تهنئتك بشكل خاص.',
     wishes_note: 'تظهر التهاني لكل الضيوف عند ربط واجهة السحابة، وإلا تُحفظ على هذا الجهاز فقط.',
     export_wishes: 'تحميل التهاني',
     wishes: 'التهاني',
@@ -483,6 +487,8 @@ function initGuestbook() {
   const publicInput = document.getElementById('wish-public');
   const charLeft = document.getElementById('char-left');
   const exportBtn = document.getElementById('export-wishes');
+  const feedbackEl = document.getElementById('wish-feedback');
+  let feedbackTimer = null;
 
   if (!form) return;
 
@@ -539,6 +545,17 @@ function initGuestbook() {
 
     form.reset();
     if (charLeft) charLeft.textContent = '300';
+
+    if (feedbackEl) {
+      const dict = I18N[currentLang] || I18N.en;
+      feedbackEl.textContent = postPublicly ? dict.wish_submitted_public : dict.wish_submitted_private;
+      feedbackEl.classList.add('show');
+
+      if (feedbackTimer) clearTimeout(feedbackTimer);
+      feedbackTimer = setTimeout(() => {
+        feedbackEl.classList.remove('show');
+      }, 4500);
+    }
 
     const panel = document.querySelector('.wishes-panel');
     if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
