@@ -13,20 +13,28 @@ const REQUEST_TIMEOUT_MS = 8000;
 
 // Set these in a small inline script in index.html when API is ready:
 // window.WISHES_API_BASE_URL = 'https://<your-function-app>.azurewebsites.net';
-// window.WISHES_API_FUNCTION_CODE = '<your-function-key>';
+// window.WISHES_API_GET_FUNCTION_CODE = '<get-wishes-function-key>';
+// window.WISHES_API_SAVE_FUNCTION_CODE = '<save-wish-function-key>';
+// Optional backward compatibility:
+// window.WISHES_API_FUNCTION_CODE = '<single-shared-key>';
 const API_BASE_URL = String(window.WISHES_API_BASE_URL || '').replace(/\/+$/, '');
-const API_FUNCTION_CODE = String(window.WISHES_API_FUNCTION_CODE || '');
+const API_GET_FUNCTION_CODE = String(
+  window.WISHES_API_GET_FUNCTION_CODE || window.WISHES_API_FUNCTION_CODE || ''
+);
+const API_SAVE_FUNCTION_CODE = String(
+  window.WISHES_API_SAVE_FUNCTION_CODE || window.WISHES_API_FUNCTION_CODE || ''
+);
 
-function buildWishesApiUrl() {
+function buildWishesApiUrl(functionCode) {
   if (!API_BASE_URL) return '';
 
   const url = new URL('/api/wishes', API_BASE_URL);
-  if (API_FUNCTION_CODE) url.searchParams.set('code', API_FUNCTION_CODE);
+  if (functionCode) url.searchParams.set('code', functionCode);
   return url.toString();
 }
 
-const API_GET_WISHES_URL = buildWishesApiUrl();
-const API_SAVE_WISH_URL = buildWishesApiUrl();
+const API_GET_WISHES_URL = buildWishesApiUrl(API_GET_FUNCTION_CODE);
+const API_SAVE_WISH_URL = buildWishesApiUrl(API_SAVE_FUNCTION_CODE);
 
 const I18N = {
   en: {
