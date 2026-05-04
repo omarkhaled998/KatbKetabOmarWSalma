@@ -9,6 +9,24 @@ const EVENT_DATE = new Date('2026-06-04T19:30:00+03:00');
 const EVENT_TIMEZONE = 'Africa/Cairo';
 const EVENT_LOCATION = 'Rooftop 2, inside Masjeed Al-Shortaa, New Cairo, Egypt';
 const STORAGE_KEY = 'wedding_wishes_omar_salma_2026';
+const REQUEST_TIMEOUT_MS = 8000;
+
+// Set these in a small inline script in index.html when API is ready:
+// window.WISHES_API_BASE_URL = 'https://<your-function-app>.azurewebsites.net';
+// window.WISHES_API_FUNCTION_CODE = '<your-function-key>';
+const API_BASE_URL = String(window.WISHES_API_BASE_URL || '').replace(/\/+$/, '');
+const API_FUNCTION_CODE = String(window.WISHES_API_FUNCTION_CODE || '');
+
+function buildWishesApiUrl() {
+  if (!API_BASE_URL) return '';
+
+  const url = new URL('/api/wishes', API_BASE_URL);
+  if (API_FUNCTION_CODE) url.searchParams.set('code', API_FUNCTION_CODE);
+  return url.toString();
+}
+
+const API_GET_WISHES_URL = buildWishesApiUrl();
+const API_SAVE_WISH_URL = buildWishesApiUrl();
 
 const I18N = {
   en: {
@@ -304,8 +322,31 @@ function normalizeWish(wish) {
   };
 }
 
-function refreshWishes() {
-  wishesCache = loadWishesLocal();
+async function refreshWishes() {
+  const localWishes = loadWishesLocal();
+
+  if (!hasRemoteWishesApi()) {
+    wishesCache = localWishes;
+    renderWishes();
+    return;
+  }
+
+  try {
+    const response = await fetchWithTimeout(API_GET_WISHES_URL, {
+      method: 'GET',
+      headers: { Accept: 'application/json' }
+    });
+
+    if (!response.ok) throw new Error(`GetWishes failed with ${response.status}`);
+
+    const payload = await response.json();
+    const remote = Array.isArray(payload?.wishes) ? payload.wishes : [];
+    wishesCache = remote.map(normalizeWish).slice(-50);
+    saveWishesLocal(wishesCache);
+  } catch {
+    wishesCache = localWishes;
+  }
+
   renderWishes();
 }
 
@@ -400,6 +441,26 @@ function initGuestbook() {
     wishesCache.push(newWish);
     saveWishesLocal(wishesCache);
     renderWishes();
+
+    if (hasRemoteWishesApi()) {
+      try {
+        const response = await fetchWithTimeout(API_SAVE_WISH_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify({ name, message })
+        });
+
+        if (!response.ok) {
+          throw new Error(`SaveWish failed with ${response.status}`);
+        }
+      } catch {
+        // Keep local fallback behavior when API call fails.
+      }
+    }
+
     form.reset();
     if (charLeft) charLeft.textContent = '300';
 
