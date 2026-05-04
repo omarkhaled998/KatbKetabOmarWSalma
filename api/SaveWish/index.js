@@ -9,10 +9,19 @@ module.exports = async function (context, req) {
       body = req.rawBody;
     }
 
+    if (!body && Buffer.isBuffer(req.rawBody)) {
+      body = req.rawBody.toString("utf8");
+    }
+
+    if (Buffer.isBuffer(body)) {
+      body = body.toString("utf8");
+    }
+
     if (typeof body === "string") {
       try {
         body = JSON.parse(body);
       } catch {
+        context.log("SaveWish rejected: invalid JSON body");
         context.res = {
           status: 400,
           body: { success: false, error: "Invalid JSON body" }
@@ -22,6 +31,7 @@ module.exports = async function (context, req) {
     }
 
     if (!body || typeof body !== "object") {
+      context.log("SaveWish rejected: request body is missing or invalid type");
       context.res = {
         status: 400,
         body: { success: false, error: "Request body is required" }
@@ -33,6 +43,7 @@ module.exports = async function (context, req) {
     const name = String(body.name || "").trim();
     const message = String(body.message || "").trim();
     if (!name || !message) {
+      context.log("SaveWish rejected: missing required name/message fields");
       context.res = {
         status: 400,
         body: { success: false, error: "Missing required fields: name, message" }

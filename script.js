@@ -462,9 +462,11 @@ function initGuestbook() {
         });
 
         if (!response.ok) {
-          throw new Error(`SaveWish failed with ${response.status}`);
+          const errorText = await response.text();
+          throw new Error(`SaveWish failed with ${response.status}: ${errorText}`);
         }
-      } catch {
+      } catch (error) {
+        console.warn('SaveWish API call failed; keeping local fallback.', error);
         // Keep local fallback behavior when API call fails.
       }
     }
