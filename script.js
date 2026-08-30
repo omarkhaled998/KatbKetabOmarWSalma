@@ -7,7 +7,7 @@
 
 const EVENT_DATE = new Date('2026-09-27T18:30:00+03:00');
 const EVENT_TIMEZONE = 'Africa/Cairo';
-const EVENT_LOCATION = 'Sky Resort, beside PetroSport Club, New Cairo, Egypt';
+const EVENT_LOCATION = 'Lebanese Terrace, Sky Resort, beside PetroSport Club, New Cairo, Egypt';
 const STORAGE_KEY = 'wedding_ceremony_wishes_omar_salma_2026';
 const REQUEST_TIMEOUT_MS = 8000;
 
@@ -85,14 +85,15 @@ const I18N = {
     hero_date: '27th of September 2026',
     hero_time: 'at 6:30 in the Evening',
     hero_venue_rooftop: 'Sky Resort',
-    hero_venue: 'Sky Resort · Beside PetroSport Club · New Cairo, Egypt',
+    hero_venue: 'Lebanese Terrace · Sky Resort · New Cairo, Egypt',
     highlight_time_label: 'Time',
     highlight_time_main: '6:30 PM',
     highlight_time_sub: 'Sunday, 27th of September 2026',
     highlight_location_label: 'Location',
     highlight_rooftop: 'Sky Resort',
     highlight_location_main: 'Sky Resort',
-    highlight_location_sub: 'Beside PetroSport Club, New Cairo',
+    highlight_location_venue: 'Lebanese Terrace',
+    highlight_location_sub: 'Beside PetroSport Club · New Cairo',
     add_calendar: 'Add to Calendar',
     get_directions: 'Get Directions',
     countdown_label: 'September 27 · 6:30 PM Cairo Time',
@@ -110,10 +111,11 @@ const I18N = {
     time_begins: 'Wedding ceremony begins at',
     venue: 'Venue',
     venue_name: 'Sky Resort',
-    venue_address: 'Beside PetroSport Club, New Cairo, Egypt',
+    venue_terrace: 'Lebanese Terrace',
+    venue_address: 'Beside PetroSport Club · New Cairo',
     find_us: 'Find Us Here',
     location: 'Location',
-    location_address: 'Sky Resort, beside PetroSport Club, New Cairo, Egypt',
+    location_address: 'Lebanese Terrace · Sky Resort · New Cairo, Egypt',
     reminder_label: 'Never Miss It',
     reminder_title: 'Set WhatsApp Reminder',
     reminder_subtitle: 'Tap a button and send the pre-filled message to yourself or loved ones.',
@@ -163,14 +165,15 @@ const I18N = {
     hero_date: '٢٧ سبتمبر ٢٠٢٦',
     hero_time: 'الساعة ٦:٣٠ مساء',
     hero_venue_rooftop: 'سكاي ريزورت',
-    hero_venue: 'سكاي ريزورت · بجوار نادي بتروسبورت · القاهرة الجديدة، مصر',
+    hero_venue: 'التراس اللبناني · سكاي ريزورت · القاهرة الجديدة، مصر',
     highlight_time_label: 'الوقت',
     highlight_time_main: '٦:٣٠ مساء',
     highlight_time_sub: 'الأحد، ٢٧ سبتمبر ٢٠٢٦',
     highlight_location_label: 'المكان',
     highlight_rooftop: 'سكاي ريزورت',
     highlight_location_main: 'سكاي ريزورت',
-    highlight_location_sub: 'بجوار نادي بتروسبورت، القاهرة الجديدة',
+    highlight_location_venue: 'التراس اللبناني',
+    highlight_location_sub: 'بجوار نادي بتروسبورت · القاهرة الجديدة',
     add_calendar: 'أضف إلى التقويم',
     get_directions: 'الاتجاهات',
     countdown_label: '٢٧ سبتمبر · ٦:٣٠ مساء بتوقيت القاهرة',
@@ -188,10 +191,11 @@ const I18N = {
     time_begins: 'يبدأ حفل الزفاف في',
     venue: 'المكان',
     venue_name: 'سكاي ريزورت',
-    venue_address: 'بجوار نادي بتروسبورت، القاهرة الجديدة، مصر',
+    venue_terrace: 'التراس اللبناني',
+    venue_address: 'بجوار نادي بتروسبورت · القاهرة الجديدة',
     find_us: 'موقعنا',
     location: 'الموقع',
-    location_address: 'سكاي ريزورت، بجوار نادي بتروسبورت، القاهرة الجديدة، مصر',
+    location_address: 'التراس اللبناني · سكاي ريزورت · القاهرة الجديدة، مصر',
     reminder_label: 'لا تفوتوا المناسبة',
     reminder_title: 'تذكير واتساب',
     reminder_subtitle: 'اضغط على الزر ثم أرسل الرسالة الجاهزة لنفسك أو لمن تحب.',
@@ -666,8 +670,8 @@ function setupWhatsAppReminders() {
   if (!week || !day || !now) return;
 
   const base = 'https://wa.me/?text=';
-  const textEn = 'Reminder: Omar & Salma wedding ceremony on Sunday, September 27, 2026 at 6:30 PM, Sky Resort beside PetroSport Club, New Cairo. Map: https://maps.google.com/maps?q=Sky+Resort+New+Cairo+Beside+PetroSport+Club';
-  const textAr = 'تذكير: حفل زفاف عمر وسلمى يوم الأحد ٢٧ سبتمبر ٢٠٢٦ الساعة ٦:٣٠ مساء في سكاي ريزورت بجوار نادي بتروسبورت، القاهرة الجديدة. الموقع: https://maps.google.com/maps?q=Sky+Resort+New+Cairo+Beside+PetroSport+Club';
+  const textEn = 'Reminder: Omar & Salma wedding ceremony on Sunday, September 27, 2026 at 6:30 PM, Lebanese Terrace at Sky Resort, beside PetroSport Club, New Cairo. Map: https://maps.google.com/maps?q=Sky+Resort+New+Cairo+Beside+PetroSport+Club';
+  const textAr = 'تذكير: حفل زفاف عمر وسلمى يوم الأحد ٢٧ سبتمبر ٢٠٢٦ الساعة ٦:٣٠ مساء في التراس اللبناني داخل سكاي ريزورت، بجوار نادي بتروسبورت، القاهرة الجديدة. الموقع: https://maps.google.com/maps?q=Sky+Resort+New+Cairo+Beside+PetroSport+Club';
   const textBase = currentLang === 'ar' ? textAr : textEn;
 
   week.href = base + encodeURIComponent(`${currentLang === 'ar' ? 'تذكير قبل أسبوع - ' : '1 week reminder - '}${textBase}`);

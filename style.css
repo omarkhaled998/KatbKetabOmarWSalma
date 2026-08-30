@@ -403,9 +403,20 @@ sup   { font-size: 0.55em; vertical-align: super; }
   font-weight: 600;
 }
 
+.highlight-venue {
+  font-family: var(--font-serif);
+  color: var(--navy-mid);
+  font-size: 1.24rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 7px;
+}
+
 .highlight-sub {
-  color: var(--text-mid);
-  font-size: 0.96rem;
+  color: var(--text-light);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .highlight-actions {
@@ -603,9 +614,7 @@ sup   { font-size: 0.55em; vertical-align: super; }
 /* ── ════════════════════════════════ ── */
 #details {
   position: relative;
-  background:
-    linear-gradient(120deg, rgba(13, 21, 53, 0.74) 0%, rgba(26, 39, 68, 0.6) 48%, rgba(13, 21, 53, 0.8) 100%),
-    url('images/MasjedAlShorta.jpg') center/cover no-repeat;
+  background: var(--navy-deep);
   padding: var(--section-py) 24px;
   text-align: center;
   overflow: hidden;
@@ -613,8 +622,17 @@ sup   { font-size: 0.55em; vertical-align: super; }
 #details::before {
   content: '';
   position: absolute;
+  inset: -18px;
+  background: url('images/weddingvenue.jpg') center 62%/cover no-repeat;
+  filter: blur(7px);
+  transform: scale(1.04);
+  pointer-events: none;
+}
+#details::after {
+  content: '';
+  position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(120deg, rgba(13, 21, 53, 0.8) 0%, rgba(26, 39, 68, 0.66) 48%, rgba(13, 21, 53, 0.84) 100%);
   pointer-events: none;
 }
 #details .section-header,
@@ -675,6 +693,30 @@ sup   { font-size: 0.55em; vertical-align: super; }
   font-weight: 600 !important;
   color: var(--gold-pale) !important;
   margin-top: 4px;
+}
+
+.detail-card .venue-resort {
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: var(--gold-pale);
+  line-height: 1.15;
+}
+
+.detail-card .venue-terrace {
+  font-size: 1.22rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.96);
+  margin-top: 7px;
+}
+
+.detail-card .venue-landmark {
+  font-family: var(--font-sans);
+  font-size: 0.67rem;
+  color: rgba(255, 255, 255, 0.68);
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  margin-top: 9px;
+  text-transform: uppercase;
 }
 
 /* ── ════════════════════════════════ ── */
@@ -1039,10 +1081,6 @@ sup   { font-size: 0.55em; vertical-align: super; }
 /* ── ════════════════════════════════ ── */
 @media (max-width: 768px) {
   :root { --section-py: 72px; }
-
-  #details::before {
-    background: rgba(255, 255, 255, 0.1);
-  }
 
   .detail-card {
     background: rgba(255, 255, 255, 0.08);
