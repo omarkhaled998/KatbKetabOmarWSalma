@@ -1,14 +1,14 @@
 /* ==========================================================
-   Katb Ketab Invitation — Omar & Salma
+  Wedding Ceremony Invitation — Omar & Salma
    script.js — Interactivity and language support
    ========================================================== */
 
 'use strict';
 
-const EVENT_DATE = new Date('2026-06-04T19:30:00+03:00');
+const EVENT_DATE = new Date('2026-09-27T18:30:00+03:00');
 const EVENT_TIMEZONE = 'Africa/Cairo';
-const EVENT_LOCATION = 'Rooftop 2, inside Masjeed Al-Shortaa, New Cairo, Egypt';
-const STORAGE_KEY = 'wedding_wishes_omar_salma_2026';
+const EVENT_LOCATION = 'Sky Resort, beside PetroSport Club, New Cairo, Egypt';
+const STORAGE_KEY = 'wedding_ceremony_wishes_omar_salma_2026';
 const REQUEST_TIMEOUT_MS = 8000;
 
 // Set these in a small inline script in index.html when API is ready:
@@ -73,43 +73,47 @@ function requestExportAccess() {
 
 const I18N = {
   en: {
-    page_title: 'Omar & Salma - Katb Ketab Invitation',
+    page_title: 'Omar & Salma - Wedding Ceremony Invitation',
     lang_toggle: 'العربية',
     nav_countdown: 'Countdown',
     nav_details: 'Details',
     nav_location: 'Location',
     nav_photos: 'Photos',
     nav_wishes: 'Wishes',
-    hero_pre: '♦ We Are Celebrating Our Katb Ketab ♦',
-    hero_weekday: 'Thursday',
-    hero_date: 'June 4, 2026',
-    hero_time: 'at 7:30 in the Evening',
-    hero_venue_rooftop: 'Rooftop 2',
-    hero_venue: 'Masjeed Al-Shortaa · New Cairo, Egypt',
+    hero_pre: '♦ We Are Celebrating Our Wedding ♦',
+    hero_weekday: 'Sunday',
+    hero_date: '27th of September 2026',
+    hero_time: 'at 6:30 in the Evening',
+    hero_venue_rooftop: 'Sky Resort',
+    hero_venue: 'Sky Resort · Beside PetroSport Club · New Cairo, Egypt',
     highlight_time_label: 'Time',
-    highlight_time_main: '7:30 PM',
-    highlight_time_sub: 'Thursday, June 4, 2026',
+    highlight_time_main: '6:30 PM',
+    highlight_time_sub: 'Sunday, 27th of September 2026',
     highlight_location_label: 'Location',
-    highlight_rooftop: 'Rooftop 2',
-    highlight_location_main: 'Masjeed Al-Shortaa',
-    highlight_location_sub: 'New Cairo, Egypt',
+    highlight_rooftop: 'Sky Resort',
+    highlight_location_main: 'Sky Resort',
+    highlight_location_sub: 'Beside PetroSport Club, New Cairo',
     add_calendar: 'Add to Calendar',
     get_directions: 'Get Directions',
-    countdown_label: 'June 4 · 7:30 PM Cairo Time',
+    countdown_label: 'September 27 · 6:30 PM Cairo Time',
     countdown_title: 'Counting Down',
-    countdown_done: 'Today is the Katb Ketab day! Congratulations Omar & Salma!',
+    countdown_done: 'Today is the wedding day! Congratulations Omar & Salma!',
     days: 'Days',
     hours: 'Hours',
     minutes: 'Minutes',
     seconds: 'Seconds',
     details_label: 'You Are Cordially Invited',
-    details_title: 'Katb Ketab Details',
+    details_title: 'Wedding Ceremony Details',
     date: 'Date',
+    detail_date: '27th of September, 2026',
     time: 'Time',
-    time_begins: 'Katb Ketab begins at',
+    time_begins: 'Wedding ceremony begins at',
     venue: 'Venue',
+    venue_name: 'Sky Resort',
+    venue_address: 'Beside PetroSport Club, New Cairo, Egypt',
     find_us: 'Find Us Here',
     location: 'Location',
+    location_address: 'Sky Resort, beside PetroSport Club, New Cairo, Egypt',
     reminder_label: 'Never Miss It',
     reminder_title: 'Set WhatsApp Reminder',
     reminder_subtitle: 'Tap a button and send the pre-filled message to yourself or loved ones.',
@@ -141,49 +145,53 @@ const I18N = {
     export_wishes: 'Export Wishes',
     wishes: 'Wishes',
     first_wish: 'Be the first to leave a wish! 💌',
-    footer_date: 'Thursday · June 4, 2026 · Masjeed Al-Shortaa',
-    footer_note: 'With all our love, we cannot wait to celebrate our Katb Ketab with you.',
+    footer_date: 'Sunday · 27th of September 2026 · Sky Resort',
+    footer_note: 'With all our love, we cannot wait to celebrate our wedding with you.',
     wish_from: 'Wish from',
     wishes_count: 'Wishes'
   },
   ar: {
-    page_title: 'دعوة كتب كتاب عمر وسلمى',
+    page_title: 'دعوة زفاف عمر وسلمى',
     lang_toggle: 'English',
     nav_countdown: 'العد التنازلي',
     nav_details: 'التفاصيل',
     nav_location: 'الموقع',
     nav_photos: 'الصور',
     nav_wishes: 'التهاني',
-    hero_pre: '♦ نحتفل بكتب كتابنا ♦',
-    hero_weekday: 'الخميس',
-    hero_date: '٤ يونيو ٢٠٢٦',
-    hero_time: 'الساعة ٧:٣٠ مساء',
-    hero_venue_rooftop: 'رووف توب ٢',
-    hero_venue: 'مسجد الشرطة · القاهرة الجديدة، مصر',
+    hero_pre: '♦ نحتفل بزفافنا ♦',
+    hero_weekday: 'الأحد',
+    hero_date: '٢٧ سبتمبر ٢٠٢٦',
+    hero_time: 'الساعة ٦:٣٠ مساء',
+    hero_venue_rooftop: 'سكاي ريزورت',
+    hero_venue: 'سكاي ريزورت · بجوار نادي بتروسبورت · القاهرة الجديدة، مصر',
     highlight_time_label: 'الوقت',
-    highlight_time_main: '٧:٣٠ مساء',
-    highlight_time_sub: 'الخميس، ٤ يونيو ٢٠٢٦',
+    highlight_time_main: '٦:٣٠ مساء',
+    highlight_time_sub: 'الأحد، ٢٧ سبتمبر ٢٠٢٦',
     highlight_location_label: 'المكان',
-    highlight_rooftop: 'رووف توب ٢',
-    highlight_location_main: 'مسجد الشرطة',
-    highlight_location_sub: 'القاهرة الجديدة، مصر',
+    highlight_rooftop: 'سكاي ريزورت',
+    highlight_location_main: 'سكاي ريزورت',
+    highlight_location_sub: 'بجوار نادي بتروسبورت، القاهرة الجديدة',
     add_calendar: 'أضف إلى التقويم',
     get_directions: 'الاتجاهات',
-    countdown_label: '٤ يونيو · ٧:٣٠ مساء بتوقيت القاهرة',
+    countdown_label: '٢٧ سبتمبر · ٦:٣٠ مساء بتوقيت القاهرة',
     countdown_title: 'العد التنازلي',
-    countdown_done: 'اليوم هو يوم كتب الكتاب! مبروك عمر وسلمى!',
+    countdown_done: 'اليوم هو يوم الزفاف! مبروك عمر وسلمى!',
     days: 'أيام',
     hours: 'ساعات',
     minutes: 'دقائق',
     seconds: 'ثوان',
     details_label: 'نتشرف بدعوتكم',
-    details_title: 'تفاصيل كتب الكتاب',
+    details_title: 'تفاصيل حفل الزفاف',
     date: 'التاريخ',
+    detail_date: '٢٧ سبتمبر ٢٠٢٦',
     time: 'الوقت',
-    time_begins: 'يبدأ كتب الكتاب في',
+    time_begins: 'يبدأ حفل الزفاف في',
     venue: 'المكان',
+    venue_name: 'سكاي ريزورت',
+    venue_address: 'بجوار نادي بتروسبورت، القاهرة الجديدة، مصر',
     find_us: 'موقعنا',
     location: 'الموقع',
+    location_address: 'سكاي ريزورت، بجوار نادي بتروسبورت، القاهرة الجديدة، مصر',
     reminder_label: 'لا تفوتوا المناسبة',
     reminder_title: 'تذكير واتساب',
     reminder_subtitle: 'اضغط على الزر ثم أرسل الرسالة الجاهزة لنفسك أو لمن تحب.',
@@ -215,8 +223,8 @@ const I18N = {
     export_wishes: 'تحميل التهاني',
     wishes: 'التهاني',
     first_wish: 'كونوا أول من يترك تهنئة! 💌',
-    footer_date: 'الخميس · ٤ يونيو ٢٠٢٦ · رووف توب ٢، مسجد الشرطة',
-    footer_note: 'بكل الحب، نتشرف بوجودكم معنا في كتب كتابنا.',
+    footer_date: 'الأحد · ٢٧ سبتمبر ٢٠٢٦ · سكاي ريزورت',
+    footer_note: 'بكل الحب، نتشرف بوجودكم معنا في حفل زفافنا.',
     wish_from: 'تهنئة من',
     wishes_count: 'تهنئة'
   }
@@ -589,7 +597,7 @@ function initGuestbook() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'katb-ketab-wishes.csv';
+      a.download = 'wedding-ceremony-wishes.csv';
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -633,22 +641,22 @@ function setupCalendarButton() {
   const ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//OmarAndSalma//KatbKetab//EN',
+    'PRODID:-//OmarAndSalma//WeddingCeremony//EN',
     `X-WR-TIMEZONE:${EVENT_TIMEZONE}`,
     'BEGIN:VEVENT',
-    'UID:katb-ketab-omar-salma-20260604@invitation',
+    'UID:wedding-ceremony-omar-salma-20260927@invitation',
     `DTSTAMP:${stamp}`,
     `DTSTART;TZID=${EVENT_TIMEZONE}:${startLocal}`,
     `DTEND;TZID=${EVENT_TIMEZONE}:${endLocal}`,
-    'SUMMARY:Omar & Salma - Katb Ketab',
+    'SUMMARY:Omar & Salma - Wedding Ceremony',
     `LOCATION:${EVENT_LOCATION}`,
-    'DESCRIPTION:Join us for the Katb Ketab of Omar and Salma.',
+    'DESCRIPTION:Join us for the wedding ceremony of Omar and Salma.',
     'END:VEVENT',
     'END:VCALENDAR'
   ].join('\r\n');
 
   btn.href = `data:text/calendar;charset=utf-8,${encodeURIComponent(ics)}`;
-  btn.setAttribute('download', 'Omar-Salma-Katb-Ketab.ics');
+  btn.setAttribute('download', 'Omar-Salma-Wedding-Ceremony.ics');
 }
 
 function setupWhatsAppReminders() {
@@ -658,8 +666,8 @@ function setupWhatsAppReminders() {
   if (!week || !day || !now) return;
 
   const base = 'https://wa.me/?text=';
-  const textEn = 'Reminder: Omar & Salma Katb Ketab on Thursday, June 4, 2026 at 7:30 PM, Rooftop 2 inside Masjeed Al-Shortaa, New Cairo. Map: https://maps.google.com/maps?q=Rooftop+2+Masjeed+Al+Shortaa+New+Cairo+Egypt';
-  const textAr = 'تذكير: كتب كتاب عمر وسلمى يوم الخميس ٤ يونيو ٢٠٢٦ الساعة ٧:٣٠ مساء في رووف توب ٢ داخل مسجد الشرطة، القاهرة الجديدة. الموقع: https://maps.google.com/maps?q=Rooftop+2+Masjeed+Al+Shortaa+New+Cairo+Egypt';
+  const textEn = 'Reminder: Omar & Salma wedding ceremony on Sunday, September 27, 2026 at 6:30 PM, Sky Resort beside PetroSport Club, New Cairo. Map: https://maps.google.com/maps?q=Sky+Resort+New+Cairo+Beside+PetroSport+Club';
+  const textAr = 'تذكير: حفل زفاف عمر وسلمى يوم الأحد ٢٧ سبتمبر ٢٠٢٦ الساعة ٦:٣٠ مساء في سكاي ريزورت بجوار نادي بتروسبورت، القاهرة الجديدة. الموقع: https://maps.google.com/maps?q=Sky+Resort+New+Cairo+Beside+PetroSport+Club';
   const textBase = currentLang === 'ar' ? textAr : textEn;
 
   week.href = base + encodeURIComponent(`${currentLang === 'ar' ? 'تذكير قبل أسبوع - ' : '1 week reminder - '}${textBase}`);
