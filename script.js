@@ -254,7 +254,7 @@ function fetchWithTimeout(url, options = {}, timeoutMs = REQUEST_TIMEOUT_MS) {
 function launchFireworks() {
   if (typeof confetti !== 'function') return;
 
-  const colors = ['#c9a84c', '#e0c97f', '#ffffff', '#1a2744', '#253660', '#f8f2e0'];
+  const colors = ['#f1b7a9', '#f7d0c6', '#fffaf7', '#849caf', '#6f899d', '#fff0e6'];
   const endTime = Date.now() + 5500;
 
   (function frame() {
@@ -292,7 +292,7 @@ function launchFireworks() {
         angle: 90,
         spread: 120,
         origin: { x: 0.5, y: 0.6 },
-        colors: ['#c9a84c', '#ffffff', '#e0c97f'],
+        colors: ['#f1b7a9', '#fffaf7', '#849caf'],
         startVelocity: 30,
         gravity: 0.6,
         scalar: 0.8,
@@ -347,8 +347,8 @@ function initQRCode() {
     text: 'https://drive.google.com/drive/folders/1ZJdbebkCx6kg0IoU63Y7XmD-nAe8Fqm_?usp=sharing',
     width: 180,
     height: 180,
-    colorDark: '#1a2744',
-    colorLight: '#ffffff',
+    colorDark: '#526d82',
+    colorLight: '#fff0e6',
     correctLevel: QRCode.CorrectLevel.H
   });
 }
